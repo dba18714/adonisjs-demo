@@ -162,16 +162,17 @@ export class TelegramBotService {
     }
 
     try {
-      const webhookOptions: any = {
-        url: this.webhookUrl,
-        drop_pending_updates: true,
-      }
+      // const webhookOptions: any = {
+      //   url: this.webhookUrl,
+      //   drop_pending_updates: true,
+      // }
 
-      if (this.webhookSecret) {
-        webhookOptions.secret_token = this.webhookSecret
-      }
+      // if (this.webhookSecret) {
+      //   webhookOptions.secret_token = this.webhookSecret
+      // }
 
-      await this.bot.api.setWebhook(webhookOptions)
+      // await this.bot.api.setWebhook(webhookOptions)
+      await this.bot.api.setWebhook(this.webhookUrl)
       logger.info(`Webhook 设置成功: ${this.webhookUrl}`)
     } catch (error) {
       logger.error('设置 Webhook 失败:', error)
