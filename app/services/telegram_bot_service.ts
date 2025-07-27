@@ -67,10 +67,10 @@ export class TelegramBotService {
     this.bot.on('message:text', (ctx) => {
       const userMessage = ctx.message.text
       const userName = ctx.from?.first_name || '用户'
-      
+
       // 记录收到的消息
       logger.info(`收到来自 ${userName} 的消息: ${userMessage}`)
-      
+
       // 回声响应
       ctx.reply(`🔄 你说: "${userMessage}"`)
     })
@@ -221,7 +221,7 @@ export class TelegramBotService {
     try {
       await this.bot.handleUpdate(update)
     } catch (error) {
-      logger.error('处理 Telegram 更新失败:', error)
+      logger.error('处理 Telegram 更新失败:' + error)
       throw error
     }
   }
