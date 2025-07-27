@@ -46,8 +46,14 @@ export default class TelegramWebhookController {
 
       // 处理更新
       await telegramBotService.handleUpdate(update)
-      
+
       logger.info('Webhook 请求处理成功')
+
+      // 返回成功响应
+      return response.status(200).json({
+        success: true,
+        message: 'Webhook 处理成功'
+      })
     } catch (error) {
       logger.error('处理 webhook 请求失败:', error)
       return response.status(500).json({

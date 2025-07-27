@@ -32,6 +32,10 @@ export class TelegramBotService {
 
     try {
       this.bot = new Bot(token)
+
+      // 初始化机器人信息（webhook模式必需）
+      await this.bot.init()
+
       this.setupHandlers()
       logger.info('Telegram机器人初始化成功')
 
