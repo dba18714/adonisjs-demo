@@ -13,11 +13,16 @@ export default class TelegramBotController {
   async status({ response }: HttpContext) {
     try {
       const isActive = telegramBotService.isActive()
+      const isUsingWebhook = telegramBotService.isUsingWebhook()
       let botInfo = null
+      let webhookInfo = null
 
       if (isActive) {
         try {
           botInfo = await telegramBotService.getBotInfo()
+          if (isUsingWebhook) {
+            webhookInfo = await telegramBotService.getWebhookInfo()
+          }
         } catch (error) {
           // 如果获取机器人信息失败，仍然返回状态
         }
@@ -27,7 +32,9 @@ export default class TelegramBotController {
         success: true,
         data: {
           isActive,
+          isUsingWebhook,
           botInfo,
+          webhookInfo,
           timestamp: new Date().toISOString()
         }
       })
@@ -120,6 +127,46 @@ export default class TelegramBotController {
       return response.status(500).json({
         success: false,
         message: '重启机器人失败',
+        error: error.message
+      })
+    }
+  }
+
+  /**
+   * 删除 Webhook
+   */
+  async deleteWebhook({ response }: HttpContext) {
+    try {
+      await telegramBotService.deleteWebhook()
+
+      return response.json({
+        success: true,
+        message: 'Webhook 删除成功'
+      })
+    } catch (error) {
+      return response.status(500).json({
+        success: false,
+        message: '删除 Webhook 失败',
+        error: error.message
+      })
+    }
+  }
+
+  /**
+   * 获取 Webhook 信息
+   */
+  async getWebhookInfo({ response }: HttpContext) {
+    try {
+      const webhookInfo = await telegramBotService.getWebhookInfo()
+
+      return response.json({
+        success: true,
+        data: webhookInfo
+      })
+    } catch (error) {
+      return response.status(500).json({
+        success: false,
+        message: '获取 Webhook 信息失败',
         error: error.message
       })
     }

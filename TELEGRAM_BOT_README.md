@@ -9,6 +9,8 @@
 - 📝 **日志记录**: 记录所有收到的消息
 - 🛠️ **管理接口**: 提供 HTTP API 来管理机器人状态
 - 🔧 **优雅关闭**: 应用关闭时自动停止机器人
+- 🌐 **Webhook 支持**: 支持 Long Polling 和 Webhook 两种模式
+- 🔒 **安全验证**: Webhook 密钥验证，确保请求来源安全
 
 ## 设置步骤
 
@@ -25,6 +27,11 @@
 
 ```env
 TELEGRAM_BOT_TOKEN=你的机器人token
+
+# 可选：Webhook 配置（生产环境推荐）
+TELEGRAM_USE_WEBHOOK=false
+TELEGRAM_WEBHOOK_URL=https://yourdomain.com/telegram/webhook
+TELEGRAM_WEBHOOK_SECRET=your_secret_here
 ```
 
 ### 3. 启动应用
@@ -55,6 +62,13 @@ npm start
 - `POST /api/telegram-bot/start` - 启动机器人
 - `POST /api/telegram-bot/stop` - 停止机器人
 - `POST /api/telegram-bot/restart` - 重启机器人
+- `DELETE /api/telegram-bot/webhook` - 删除 webhook
+- `GET /api/telegram-bot/webhook/info` - 获取 webhook 信息
+
+### Webhook 接口
+
+- `POST /telegram/webhook` - 接收 Telegram 消息（webhook 模式）
+- `GET /telegram/webhook/verify` - 验证 webhook 配置
 
 #### 示例请求
 
@@ -70,6 +84,24 @@ curl -X POST http://localhost:3333/api/telegram-bot/stop
 
 # 重启机器人
 curl -X POST http://localhost:3333/api/telegram-bot/restart
+
+# 删除 webhook
+curl -X DELETE http://localhost:3333/api/telegram-bot/webhook
+
+# 获取 webhook 信息
+curl http://localhost:3333/api/telegram-bot/webhook/info
+
+# 验证 webhook 配置
+curl http://localhost:3333/telegram/webhook/verify
+```
+
+### 测试脚本
+
+项目提供了一个测试脚本来验证所有功能：
+
+```bash
+# 运行测试脚本
+node scripts/test_webhook.js
 ```
 
 ## 项目结构

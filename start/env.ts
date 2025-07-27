@@ -18,4 +18,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   HOST: Env.schema.string({ format: 'host' }),
   LOG_LEVEL: Env.schema.string(),
   TELEGRAM_BOT_TOKEN: Env.schema.string.optional(),
+  TELEGRAM_WEBHOOK_URL: Env.schema.string.optional(),
+  TELEGRAM_WEBHOOK_SECRET: Env.schema.string.optional(),
+  TELEGRAM_USE_WEBHOOK: Env.schema.boolean.optional(),
 })
